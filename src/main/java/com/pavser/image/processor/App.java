@@ -1,6 +1,10 @@
 package com.pavser.image.processor;
 
+import com.pavser.image.processor.domain.ImageProcessor;
 import org.apache.commons.cli.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,6 +20,7 @@ import java.net.URISyntaxException;
  * https://www.codejava.net/java-se/graphics/how-to-resize-images-in-java
  *
  */
+@ComponentScan(basePackages = "com.pavser.image.processor")
 public class App {
 
     public static void main(String[] args) {
@@ -43,23 +48,27 @@ public class App {
 
 
         try {
-            URI uri = new URI(inputFilePath);
-            File inputFile = new File(uri);
-            BufferedImage inputImage = ImageIO.read(inputFile);
-            BufferedImage outputImage = new BufferedImage(100,100, BufferedImage.TYPE_BYTE_GRAY);
-            Graphics2D g2d = outputImage.createGraphics();
-            g2d.drawImage(inputImage, 0, 0, 100, 100, null);
-            g2d.dispose();
-            String formatName = inputFilePath.substring(inputFilePath
-                    .lastIndexOf(".") + 1);
-            File output1 = new File("res_1." + formatName);
-            if (!output1.exists()) {
-                output1.createNewFile();
-            }
-            ImageIO.write(outputImage, formatName, output1);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            ApplicationContext context = new AnnotationConfigApplicationContext(App.class);
+
+            ImageProcessor bean = context.getBean(ImageProcessor.class);
+            bean.processImage(100, 100, inputFilePath);
+
+//            URI uri = new URI(inputFilePath);
+//            File inputFile = new File(uri);
+//            BufferedImage inputImage = ImageIO.read(inputFile);
+//            BufferedImage outputImage = new BufferedImage(100,100, BufferedImage.TYPE_BYTE_GRAY);
+//
+//            Graphics2D g2d = outputImage.createGraphics();
+//            g2d.drawImage(inputImage, 0, 0, 100, 100, null);
+//            g2d.dispose();
+//            String formatName = inputFilePath.substring(inputFilePath
+//                    .lastIndexOf(".") + 1);
+//            File output1 = new File("res_1." + formatName);
+//            if (!output1.exists()) {
+//                output1.createNewFile();
+//            }
+//            ImageIO.write(outputImage, formatName, output1);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

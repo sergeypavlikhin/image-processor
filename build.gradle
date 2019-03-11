@@ -1,3 +1,9 @@
+buildscript {
+    ext.versions = [
+            spring_version : '5.0.6.RELEASE',
+    ]
+}
+
 group 'com.pavser'
 version '1.0'
 
@@ -12,7 +18,11 @@ repositories {
 
 
 dependencies {
-    compile 'commons-cli:commons-cli:1.4'
+    implementation 'commons-cli:commons-cli:1.4'
+    implementation "org.projectlombok:lombok:1.16.2"
+    implementation "org.springframework:spring-context:${versions.spring_version}"
+    implementation "org.springframework:spring-core:${versions.spring_version}"
+    implementation "org.springframework:spring-beans:${versions.spring_version}"
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
