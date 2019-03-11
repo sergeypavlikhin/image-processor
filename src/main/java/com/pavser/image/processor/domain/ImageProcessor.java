@@ -28,9 +28,10 @@ public class ImageProcessor {
      * @param width result width
      * @param height result height
      * @param sourceImagePath path to source image
+     * @return name of result file
      * @throws ImageProcessorException if something wrong
      */
-    public void processImage(Integer width, Integer height, String sourceImagePath) throws ImageProcessorException {
+    public String processImage(Integer width, Integer height, String sourceImagePath) throws ImageProcessorException {
         //prepare args
         BufferedImage inputFile = bufferedImageHelper.open(sourceImagePath);
         TransformArg arg = new TransformArg()
@@ -42,7 +43,9 @@ public class ImageProcessor {
         BufferedImage outputFile = imageTransformer.transform(inputFile, arg);
 
         //save result
-        bufferedImageHelper.save(getResultFileName(sourceImagePath), outputFile);
+        String resultFileName = getResultFileName(sourceImagePath);
+        bufferedImageHelper.save(resultFileName, outputFile);
+        return resultFileName;
     }
 
     private String getResultFileName(String inputImagePath) {

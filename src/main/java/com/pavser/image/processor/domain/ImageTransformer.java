@@ -5,6 +5,9 @@ import lombok.NonNull;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * Transforms image
+ */
 public interface ImageTransformer {
 
     /**
