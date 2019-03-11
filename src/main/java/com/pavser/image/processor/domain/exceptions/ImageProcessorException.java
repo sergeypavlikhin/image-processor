@@ -1,6 +1,10 @@
-package com.pavser.image.processor.domain;
+package com.pavser.image.processor.domain.exceptions;
 
 public class ImageProcessorException extends Exception {
+
+    public ImageProcessorException() {
+        super();
+    }
 
     public ImageProcessorException(String message) {
         super(message);

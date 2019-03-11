@@ -1,6 +1,6 @@
 package com.pavser.image.processor.helper;
 
-import com.pavser.image.processor.domain.ImageProcessorException;
+import com.pavser.image.processor.domain.exceptions.ImageProcessorException;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
