@@ -7,39 +7,54 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+/**
+ * Provide method to work with BufferedImage
+ */
 @Component
 public class BufferedImageHelper {
 
+    /**
+     * Open image by URL
+     * @param inputImagePath URL
+     * @return image wrapped by BufferedImage
+     * @throws ImageProcessorException if couldn't open image
+     */
     public BufferedImage open(String inputImagePath) throws ImageProcessorException {
         try {
-            URI uri = new URI(inputImagePath);
-            File inputFile = new File(uri);
-            return ImageIO.read(inputFile);
+            URL uri = new URL(inputImagePath);
+            return ImageIO.read(uri);
         } catch (Exception e) {
             throw new ImageProcessorException(e);
         }
     }
 
-
-    public void save(String fileName, BufferedImage bufferedImage) throws ImageProcessorException {
+    /**
+     * Store {@param bufferedImage} with name as {@param fileName}
+     * @param fileName name
+     * @param bufferedImage image
+     * @return final file name
+     * @throws ImageProcessorException if couldn't save image
+     */
+    public String save(String fileName, BufferedImage bufferedImage) throws ImageProcessorException {
         try {
+            //extract formatName
+            String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
             // prepare final file
             File outputFile = new File(fileName);
             if (outputFile.exists()) {
                 outputFile.delete();
             }
             outputFile.createNewFile();
-
-            // extract format name
-            String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
-
             // write
             ImageIO.write(bufferedImage, formatName, outputFile);
+            return fileName;
         } catch (Exception e) {
             throw new ImageProcessorException(e);
         }
-
     }
-
 }

@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.awt.image.BufferedImage;
-import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Processes images
@@ -15,6 +17,7 @@ import java.nio.file.Paths;
 @Component
 public class ImageProcessor {
 
+    private static final List<String> SUPPORTS_FORMATS = Arrays.asList("jpg", "jpeg", "png");
     protected static final String RESULT_PREFIX = "result_";
 
     @Autowired
@@ -44,13 +47,27 @@ public class ImageProcessor {
 
         //save result
         String resultFileName = getResultFileName(sourceImagePath);
-        bufferedImageHelper.save(resultFileName, outputFile);
-        return resultFileName;
+        return bufferedImageHelper.save(resultFileName, outputFile);
     }
 
-    private String getResultFileName(String inputImagePath) {
-        return RESULT_PREFIX + Paths.get(inputImagePath).getFileName().toString();
+    protected String getResultFileName(String original) {
+        String onlyFileName = RESULT_PREFIX + System.currentTimeMillis();
+
+        // extract format name
+        String formatName = null;
+        int dotIndex = original.lastIndexOf(".");
+        if (dotIndex > 0) {
+            formatName = original.substring(dotIndex + 1);
+        }
+        if (formatName == null || isNotValidFormatName(formatName)) {
+            formatName = "jpg";
+        }
+
+        return onlyFileName + "." + formatName;
     }
 
+    private boolean isNotValidFormatName(String formatName) {
+        return !SUPPORTS_FORMATS.contains(formatName.toLowerCase());
+    }
 
 }

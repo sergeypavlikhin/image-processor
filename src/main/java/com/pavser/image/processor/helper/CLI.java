@@ -1,33 +1,35 @@
-package com.pavser.image.processor;
+package com.pavser.image.processor.helper;
 
-import com.pavser.image.processor.domain.ImageProcessor;
-import com.pavser.image.processor.domain.exceptions.ImageProcessorException;
-import org.apache.commons.cli.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
+import com.pavser.image.processor.domain.ParsedOptions;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-
-@ComponentScan(basePackages = "com.pavser.image.processor")
-public class App {
+/**
+ * Command line interface.
+ * Do logic with CL commands
+ */
+public class CLI {
 
     public static final String PARAM_INPUT_FILE = "input";
     public static final String PARAM_WIDTH = "width";
     public static final String PARAM_HEIGHT = "height";
 
-    public static void main(String[] args) {
-
+    /**
+     * Parse and validate input array of CL arguments
+     * @param args CL arguments
+     * @return POJO with argument values
+     */
+    public ParsedOptions parse(String[] args) {
         Options options = getOptions();
+        return parse(options, args);
+    }
 
+    private ParsedOptions parse(Options options, String[] args) {
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         CommandLine cmd = null;
@@ -55,19 +57,10 @@ public class App {
             System.exit(1);
         }
 
-        try {
-            ApplicationContext context = new AnnotationConfigApplicationContext(App.class);
-            ImageProcessor bean = context.getBean(ImageProcessor.class);
-            String resultFileName = bean.processImage(width, height, inputFilePath);
-            System.out.println("Your file is: " + System.getProperty("user.dir") + File.pathSeparator + resultFileName);
-        } catch (Exception e) {
-            System.out.println("Couldn't process image. Reason is " + e.getMessage());
-            e.printStackTrace();
-            System.exit(1);
-        }
+        return new ParsedOptions(width, height, inputFilePath);
     }
 
-    private static Options getOptions() {
+    private Options getOptions() {
         Options options = new Options();
 
         Option input = new Option("i", PARAM_INPUT_FILE, true, "Input image to process. URI");
@@ -83,5 +76,6 @@ public class App {
         options.addOption(heightOpt);
         return options;
     }
+
 
 }
