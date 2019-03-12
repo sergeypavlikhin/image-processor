@@ -18,8 +18,8 @@ public class CLITest {
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
                 {
-                        new String[]{"-w", "100", "-h", "100", "-i", "bla.bla"},
-                        new ParsedOptions().setWidth(100).setHeight(100).setInputFilePath("bla.bla"),
+                        new String[]{"-w", "100", "-h", "100", "-i", "bla"},
+                        new ParsedOptions().setWidth(100).setHeight(100).setInputFilePath("bla"),
                         false
                 },
                 {
