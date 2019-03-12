@@ -28,12 +28,11 @@ public class Runner {
             //print result
             System.out.println("Your file is: " + System.getProperty("user.dir") + System.getProperty("file.separator") + resultFileName);
         } catch (CLIException e) {
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
             System.exit(1);
         }
         catch (Exception e) {
             System.err.println("Couldn't process image. Reason is " + e.getMessage());
-            e.printStackTrace();
             System.exit(1);
         }
     }

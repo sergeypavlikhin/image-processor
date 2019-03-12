@@ -6,14 +6,10 @@ import org.springframework.stereotype.Component;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
- * Provide method to work with BufferedImage
+ * Provide methods to work with BufferedImage
  */
 @Component
 public class BufferedImageHelper {
