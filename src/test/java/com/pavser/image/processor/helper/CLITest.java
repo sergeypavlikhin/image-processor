@@ -18,9 +18,19 @@ public class CLITest {
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
                 {
-                        new String[]{"-w", "100", "-h", "100", "-i", "bla"},
-                        new ParsedOptions().setWidth(100).setHeight(100).setInputFilePath("bla"),
+                        new String[]{"-w", "100", "-h", "100", "-i", "https://bla.bla/bla.bla"},
+                        new ParsedOptions().setWidth(100).setHeight(100).setInputFilePath("https://bla.bla/bla.bla"),
                         false
+                },
+                {
+                        new String[]{"-w", "100", "-h", "100", "-i", "file://bla.bla/bla.bla"},
+                        new ParsedOptions().setWidth(100).setHeight(100).setInputFilePath("file://bla.bla/bla.bla"),
+                        false
+                },
+                {
+                        new String[]{"-w", "100", "-h", "100", "-i", "bla.bla/bla.bla"},
+                        null,
+                        true
                 },
                 {
                         new String[]{"-w", "99.54", "-h", "100", "-i", "bla.bla"},

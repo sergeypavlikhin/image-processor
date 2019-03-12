@@ -10,6 +10,9 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 /**
  * Command line interface.
  * Do logic with CL commands
@@ -46,6 +49,12 @@ public class CLI {
         String widthStr = cmd.getOptionValue(PARAM_WIDTH);
         String heightStr = cmd.getOptionValue(PARAM_HEIGHT);
 
+        try {
+            new URL(inputFilePath);
+        } catch (MalformedURLException e) {
+            throw new CLIException("Malformed url in input.");
+        }
+
         Integer width = -1;
         Integer height = -1;
 
@@ -62,7 +71,8 @@ public class CLI {
     private Options getOptions() {
         Options options = new Options();
 
-        Option input = new Option("i", PARAM_INPUT_FILE, true, "Input image to process. URI");
+        Option input = new Option("i", PARAM_INPUT_FILE, true,
+                "Input image to process. URL. Might work with http(s) and file schema. Supports JPG and PNG formats.");
         input.setRequired(true);
         options.addOption(input);
 
