@@ -1,6 +1,7 @@
 package com.pavser.image.processor.helper;
 
-import com.pavser.image.processor.domain.ParsedOptions;
+import com.pavser.image.processor.domain.exceptions.CLIException;
+import com.pavser.image.processor.domain.structures.ParsedOptions;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -24,12 +25,12 @@ public class CLI {
      * @param args CL arguments
      * @return POJO with argument values
      */
-    public ParsedOptions parse(String[] args) {
+    public ParsedOptions parse(String[] args) throws CLIException {
         Options options = getOptions();
         return parse(options, args);
     }
 
-    private ParsedOptions parse(Options options, String[] args) {
+    private ParsedOptions parse(Options options, String[] args) throws CLIException {
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         CommandLine cmd = null;
@@ -37,9 +38,8 @@ public class CLI {
         try {
             cmd = parser.parse(options, args);
         } catch (ParseException e) {
-            System.out.println(e.getMessage());
             formatter.printHelp("Use help below", options);
-            System.exit(1);
+            throw new CLIException(e);
         }
 
         String inputFilePath = cmd.getOptionValue(PARAM_INPUT_FILE);
@@ -53,8 +53,7 @@ public class CLI {
             width = Integer.parseInt(widthStr);
             height = Integer.parseInt(heightStr);
         } catch (Exception e) {
-            System.out.println("Incorrect format of width or height. Only integers is allowed");
-            System.exit(1);
+            throw new CLIException("Incorrect format of width or height. Only integers is allowed");
         }
 
         return new ParsedOptions(width, height, inputFilePath);

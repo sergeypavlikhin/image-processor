@@ -1,13 +1,12 @@
 package com.pavser.image.processor;
 
 import com.pavser.image.processor.domain.ImageProcessor;
-import com.pavser.image.processor.domain.ParsedOptions;
+import com.pavser.image.processor.domain.exceptions.CLIException;
+import com.pavser.image.processor.domain.structures.ParsedOptions;
 import com.pavser.image.processor.helper.CLI;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
-
-import java.io.File;
 
 @ComponentScan(basePackages = "com.pavser.image.processor")
 public class Runner {
@@ -28,8 +27,12 @@ public class Runner {
 
             //print result
             System.out.println("Your file is: " + System.getProperty("user.dir") + System.getProperty("file.separator") + resultFileName);
-        } catch (Exception e) {
-            System.out.println("Couldn't process image. Reason is " + e.getMessage());
+        } catch (CLIException e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+        catch (Exception e) {
+            System.err.println("Couldn't process image. Reason is " + e.getMessage());
             e.printStackTrace();
             System.exit(1);
         }
